@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+	images: {
+		domains: ['media.dodostatic.net', 'cdn.dodostatic.net'],
+	},
+}
 
-export default nextConfig;
+export default nextConfig
