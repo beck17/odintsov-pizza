@@ -15,7 +15,7 @@ export async function PATCH(
 			return NextResponse.json({ error: 'token not found' })
 		}
 
-		const cartItem = await prisma.cart.findFirst({
+		const cartItem = await prisma.cartItem.findFirst({
 			where: {
 				id,
 			},
@@ -38,7 +38,7 @@ export async function PATCH(
 
 		return NextResponse.json(updatedUserCart)
 	} catch (e) {
-		console.log('[CART_PATH] Server error', e)
+		console.log('[CART_GET] Server error', e)
 		return NextResponse.json(
 			{ message: 'Не удалось обновить корзину' },
 			{ status: 500 },
@@ -58,7 +58,7 @@ export async function DELETE(
 			return NextResponse.json({ error: 'token not found' })
 		}
 
-		const cartItem = await prisma.cart.findFirst({
+		const cartItem = await prisma.cartItem.findFirst({
 			where: {
 				id,
 			},
@@ -78,7 +78,7 @@ export async function DELETE(
 
 		return NextResponse.json(updatedUserCart)
 	} catch (e) {
-		console.log('[CART_PATH] Server error', e)
+		console.log('[CART_REMOVE] Server error', e)
 
 		return NextResponse.json(
 			{ message: 'Не удалось удалить товар' },
