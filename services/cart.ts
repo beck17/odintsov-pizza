@@ -1,6 +1,6 @@
 import { axiosInstance } from '@/services/instance'
 import { ApiRoutes } from '@/services/constants'
-import { CartDTO } from '@/services/dto/cart.dto'
+import { CartDTO, CreateCartItemValues } from '@/services/dto/cart.dto'
 
 export const getCart = async (): Promise<CartDTO> => {
 	const { data } = await axiosInstance.get<CartDTO>(ApiRoutes.CART)
@@ -24,6 +24,14 @@ export const removeCartItem = async (id: number): Promise<CartDTO> => {
 	const { data } = await axiosInstance.delete<CartDTO>(
 		ApiRoutes.CART + '/' + id,
 	)
+
+	return data
+}
+
+export const addCartItem = async (
+	values: CreateCartItemValues,
+): Promise<CartDTO> => {
+	const { data } = await axiosInstance.post<CartDTO>(ApiRoutes.CART, values)
 
 	return data
 }

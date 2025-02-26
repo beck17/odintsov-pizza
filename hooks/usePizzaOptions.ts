@@ -10,6 +10,7 @@ import { ProductItem } from '@prisma/client'
 interface ReturnProps {
 	size: pizzaSize
 	type: pizzaType
+	currentItemId?: number
 	availableSizes: Variant[]
 	selectedIngredients: Set<number>
 	addIngredients: (id: number) => void
@@ -21,19 +22,34 @@ export const usePizzaOptions = (items: ProductItem[]): ReturnProps => {
 	const [size, setSize] = React.useState<pizzaSize>(25)
 	const [type, setType] = React.useState<pizzaType>(1)
 
-	const [selectedIngredients, { toggle: addIngredients }] = useSet(new Set<number>([]))
+	const currentItemId = items.find(
+		(item) => item.size === size && item.pizzaType === type,
+	)?.id
+
+	const [selectedIngredients, { toggle: addIngredients }] = useSet(
+		new Set<number>([]),
+	)
 	const availableSizes = getAvailablePizzaSizes(type, items)
 
 	React.useEffect(() => {
-		const isAvailableSize = availableSizes
-			?.find((item) => Number(item.value) === size && !item.disabled)
-		const availableSize = availableSizes
-			?.find((item) => !item.disabled)
+		const isAvailableSize = availableSizes?.find(
+			(item) => Number(item.value) === size && !item.disabled,
+		)
+		const availableSize = availableSizes?.find((item) => !item.disabled)
 
 		if (!isAvailableSize && availableSize) {
 			setSize(Number(availableSize.value) as pizzaSize)
 		}
 	}, [type])
 
-	return {size, type, setType, setSize, selectedIngredients, addIngredients, availableSizes}
+	return {
+		size,
+		type,
+		setType,
+		setSize,
+		selectedIngredients,
+		addIngredients,
+		availableSizes,
+		currentItemId,
+	}
 }
