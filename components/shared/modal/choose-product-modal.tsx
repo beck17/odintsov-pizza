@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { ChoosePizzaForm, ChooseProductForm } from '@/components/shared'
 import { IProduct } from '@/@types/product'
 import { useCartStore } from '@/store/cart'
+import toast from 'react-hot-toast'
 
 interface Props {
 	product: IProduct
@@ -17,19 +18,25 @@ export const ChooseProductModal: React.FC<Props> = ({ className, product }) => {
 	const router = useRouter()
 	const firstItem = product.items[0]
 	const isPizzaProduct = Boolean(firstItem.pizzaType)
+	const { loading } = useCartStore(state => state)
 
 	const addCartItem = useCartStore((state) => state.addCartItem)
 
-	const onAddProduct = async () => {
-		await addCartItem({
-			productItemId: firstItem.id,
-		})
-	}
-	const onAddPizza = async (productItemId: number, ingredients: number[]) => {
-		await addCartItem({
-			productItemId,
-			ingredients,
-		})
+	const onAddProductToCart = async (productItemId?: number, ingredients?: number[]) => {
+		try {
+			const itemId = productItemId ?? firstItem.id
+
+			await addCartItem({
+				productItemId: itemId,
+				ingredients,
+			})
+
+			toast.success(product.name + ' добавлен в корзину!')
+			router.back()
+		} catch (e) {
+			toast.error(`Не удалось добавить ${product.name.toLowerCase()} в корзину`)
+			console.log(e)
+		}
 	}
 	return (
 		<Dialog open={Boolean(product)} onOpenChange={() => router.back()}>
@@ -41,18 +48,20 @@ export const ChooseProductModal: React.FC<Props> = ({ className, product }) => {
 			>
 				{isPizzaProduct ? (
 					<ChoosePizzaForm
-						onClickAddCart={onAddPizza}
+						onClickAddCart={onAddProductToCart}
 						imageUrl={product.imageUrl}
 						name={product.name}
 						ingredients={product.ingredients}
 						items={product.items}
+						loading={loading}
 					/>
 				) : (
 					<ChooseProductForm
-						onClickAdd={onAddProduct}
+						onClickAdd={onAddProductToCart}
 						imageUrl={product.imageUrl}
 						name={product.name}
 						price={firstItem.price}
+						loading={loading}
 					/>
 				)}
 			</DialogContent>

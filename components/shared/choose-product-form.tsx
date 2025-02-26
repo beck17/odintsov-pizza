@@ -10,6 +10,7 @@ interface Props {
 	imageUrl: string
 	name: string
 	price: number
+	loading?: boolean
 	className?: string
 	onClickAdd?: VoidFunction
 }
@@ -19,6 +20,7 @@ export const ChooseProductForm: React.FC<Props> = ({
 	name,
 	price,
 	onClickAdd,
+	loading,
 	className,
 }) => {
 	return (
@@ -43,7 +45,8 @@ export const ChooseProductForm: React.FC<Props> = ({
 				<Title className="font-bold" size="md" text={name} />
 
 				<Button
-					onClick={onClickAdd}
+					loading={loading}
+					onClick={() => onClickAdd?.()}
 					className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
 				>
 					Добавить в корзину за {price}₽

@@ -11,6 +11,7 @@ import { getPizzaDetails } from '@/lib/get-pizza-details'
 interface Props {
 	imageUrl: string
 	name: string
+	loading?: boolean
 	ingredients: Ingredient[]
 	items: ProductItem[]
 	onClickAddCart: (productItemId: number, ingredients: number[]) => void
@@ -20,6 +21,7 @@ interface Props {
 export const ChoosePizzaForm: React.FC<Props> = ({
 	imageUrl,
 	name,
+	loading,
 	onClickAddCart,
 	items,
 	ingredients,
@@ -88,6 +90,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 				</div>
 
 				<Button
+					loading={loading}
 					onClick={handleClickAddToCart}
 					className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
 				>
