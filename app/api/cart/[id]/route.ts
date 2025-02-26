@@ -45,3 +45,44 @@ export async function PATCH(
 		)
 	}
 }
+
+export async function DELETE(
+	req: NextRequest,
+	{ params }: { params: { id: string } },
+) {
+	try {
+		const id = Number(params.id)
+		const token = req.cookies.get('cartToken')?.value
+
+		if (!token) {
+			return NextResponse.json({ error: 'token not found' })
+		}
+
+		const cartItem = await prisma.cart.findFirst({
+			where: {
+				id,
+			},
+		})
+
+		if (!cartItem) {
+			return NextResponse.json({ error: 'cartItem not found' })
+		}
+
+		await prisma.cartItem.delete({
+			where: {
+				id,
+			},
+		})
+
+		const updatedUserCart = await updateCartTotalAmount(token)
+
+		return NextResponse.json(updatedUserCart)
+	} catch (e) {
+		console.log('[CART_PATH] Server error', e)
+
+		return NextResponse.json(
+			{ message: 'Не удалось удалить товар' },
+			{ status: 500 },
+		)
+	}
+}

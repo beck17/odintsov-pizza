@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { Api } from '@/services/api-client'
 import { CartStateItem, getCartDetails } from '@/lib/get-cart-details'
+import { removeCartItem } from '@/services/cart'
 
 export interface CartState {
 	loading: boolean
@@ -47,5 +48,17 @@ export const useCartStore = create<CartState>((set, get) => ({
 	},
 
 	addCartItem: async (values: any) => {},
-	removeCartItem: async (id: number) => {},
+
+	removeCartItem: async (id: number) => {
+		try {
+			set({ loading: true, error: false })
+			const data = await Api.cart.removeCartItem(id)
+			set(getCartDetails(data))
+		} catch (error) {
+			console.error(error)
+			set({ loading: false, error: true })
+		} finally {
+			set({ loading: false, error: false })
+		}
+	},
 }))
