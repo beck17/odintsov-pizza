@@ -2,8 +2,20 @@ import { axiosInstance } from '@/services/instance'
 import { ApiRoutes } from '@/services/constants'
 import { CartDTO } from '@/services/dto/cart.dto'
 
-export const fetchCart = async (): Promise<CartDTO> => {
-	const { data } = await axiosInstance.get<CartDTO>(ApiRoutes.FETCH_CART)
+export const getCart = async (): Promise<CartDTO> => {
+	const { data } = await axiosInstance.get<CartDTO>(ApiRoutes.CART)
+
+	return data
+}
+
+export const updateItemQuantity = async (
+	id: number,
+	quantity: number,
+): Promise<CartDTO> => {
+	const { data } = await axiosInstance.patch<CartDTO>(
+		ApiRoutes.CART + '/' + id,
+		{ quantity },
+	)
 
 	return data
 }
