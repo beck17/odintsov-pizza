@@ -22,11 +22,13 @@ export const CartDrawerItem: React.FC<Props> = ({
 	details,
 	quantity,
 	price,
+	disabled,
 	onCLickCountButton,
 	onClickRemoveCartItem,
 }) => {
+	console.log(disabled)
 	return (
-		<div className={cn('flex bg-white p-5 gap-6', className)}>
+		<div className={cn('flex bg-white p-5 gap-6',{'opacity-50 pointer-events-none' : disabled}, className)} >
 			<CartItemDetailsImage name={name} src={imageUrl} />
 
 			<div className="flex-1">
