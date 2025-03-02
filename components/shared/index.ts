@@ -25,3 +25,4 @@ export { CartItemDetailsImage } from './cart-item-details/cart-item-details-imag
 export { CartItemDetailsPrice } from './cart-item-details/cart-item-details-price'
 export { CountButton } from './cout-button'
 export { CountIconButton } from './count-icon-button'
+export { ProductForm } from './product-form'
