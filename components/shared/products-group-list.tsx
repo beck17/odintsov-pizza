@@ -5,12 +5,13 @@ import { useIntersection } from 'react-use'
 import { Title } from './title'
 import { ProductCard } from './product-card'
 import { useCategoryStore } from '@/store/category'
+import { IProduct } from '@/@types/product'
 
 
 interface Props {
 	categoryId: number
 	title: string
-	items: any[] // ВРеменный вариант
+	items: IProduct[]
 	className?: string
 	listClassName?: string
 }
@@ -37,14 +38,14 @@ export const ProductGroupList: React.FC<Props> = ({
 			<Title text={title} size='lg' className='font-extrabold mb-5' />
 
 			<div className='grid grid-cols-3 gap-[50px]'>
-				{items.map((item, i) => (
+				{items.map((item) => (
 					<ProductCard
 						id={item.id}
 						key={item.id}
 						name={item.name}
 						imageUrl={item.imageUrl}
 						price={item.items[0].price}
-						count={i % 2}
+						ingredients={item.ingredients}
 					/>
 				))}
 			</div>

@@ -17,9 +17,9 @@ interface PriceMinMax {
 	maxPrice: number;
 }
 
-const priceMinMax: PriceMinMax = {
-	minPrice: 499,
-	maxPrice: 1699,
+export const priceMinMax: PriceMinMax = {
+	minPrice: 219,
+	maxPrice: 899,
 }
 
 export const Filters: React.FC<Props> = ({ className }) => {
